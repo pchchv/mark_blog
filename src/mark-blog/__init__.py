@@ -1,7 +1,7 @@
 from typing import Any
 from fastapi import FastAPI
 
-from main import blog_app
+from main import get_blog_app
 from router import get_router
 
 
