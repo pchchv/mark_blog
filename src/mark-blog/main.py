@@ -3,9 +3,6 @@ from fastapi import FastAPI
 from router import get_router
 
 
-app = blog_app(FastAPI())
-
-
 def blog_app(
         app: FastAPI,
         prefix: str | None = "blog",
