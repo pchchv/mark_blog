@@ -1,5 +1,6 @@
 from typing import Any
 from fastapi import FastAPI
+
 from router import get_router
 
 

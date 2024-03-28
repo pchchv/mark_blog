@@ -1,7 +1,10 @@
 from fastapi import FastAPI
+
 from main import blog_app
 
+
 app = blog_app(FastAPI())
+
 
 @app.get("/")
 async def index() -> dict:
