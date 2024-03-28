@@ -12,7 +12,7 @@ def get_blog_app(
     prefix: str | None = "blog",
     favorite_post_ids: set[str] = set(),
     jinja2_loader: jinja2.BaseLoader = jinja2.PackageLoader(
-        "fastapi_blog", "templates"
+        "mark_blog", "templates"
     ),
     jinja2_extensions: set[str] = {
         "jinja2_time.TimeExtension",
