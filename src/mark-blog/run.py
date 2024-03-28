@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 
-from main import blog_app
+from main import get_blog_app
 
 
-app = blog_app(FastAPI())
+app = get_blog_app(FastAPI())
 
 
 @app.get("/")
