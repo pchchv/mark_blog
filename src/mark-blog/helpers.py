@@ -68,3 +68,17 @@ def list_posts(published: bool = True, posts_dirname="posts") -> list[dict]:
 
     posts.sort(key=lambda x: x["date"], reverse=True)
     return [x for x in filter(lambda x: x["published"] is published, posts)]
+
+
+def load_markdown_content(path: pathlib.Path) -> dict[str, str | dict]:
+    raw: str = path.read_text()
+    # Metadata is the first part of the file
+    page = {}
+    page["metadata"] = yaml.safe_load(raw.split("---")[1])
+
+    # Content is the second part of the file
+    content_list: list = raw.split("---")[2:]
+    page["markdown"] = "\n---\n".join(content_list)
+    page["html"] = markdown(page["markdown"])
+
+    return page
