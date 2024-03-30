@@ -40,4 +40,14 @@ def get_router(
             request=request, name="post.html", context={"post": post}
         )
 
+    @router.get("/posts")
+    async def blog_posts(request: Request, response_class=HTMLResponse):
+        posts: list[dict] = helpers.list_posts()
+
+        posts.sort(key=lambda x: x["date"], reverse=True)
+
+        return templates.TemplateResponse(
+            request=request, name="posts.html", context={"posts": posts}
+        )
+
     return router
