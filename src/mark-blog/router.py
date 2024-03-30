@@ -49,5 +49,14 @@ def get_router(
         return templates.TemplateResponse(
             request=request, name="posts.html", context={"posts": posts}
         )
+    
+    @router.get("/tags/{tag_id}")
+    async def blog_tag(tag_id: str, request: Request, response_class=HTMLResponse):
+        posts: list[dict] = helpers.list_posts()
+        posts = [x for x in filter(lambda x: tag_id in x.get("tags", []), posts)]
+
+        return templates.TemplateResponse(
+            request=request, name="tag.html", context={"tag_id": tag_id, "posts": posts}
+        )
 
     return router
