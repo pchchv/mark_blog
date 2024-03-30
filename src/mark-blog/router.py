@@ -82,4 +82,19 @@ def get_router(
             request=request, name="tags.html", context={"tags": tags}
         )
 
+    @router.get("/page/{page_id}")
+    async def blog_page(page_id: str, request: Request, response_class=HTMLResponse):
+        path = pathlib.Path(f"pages/{page_id}.md")
+        try:
+            page: dict[str, str | dict] = helpers.load_content_from_markdown_file(path)
+        except FileNotFoundError:
+            return templates.TemplateResponse(
+                request=request, name="404.html", status_code=404
+            )
+        page["slug"] = page_id
+
+        return templates.TemplateResponse(
+            request=request, name="page.html", context={"page": page}
+        )
+
     return router
