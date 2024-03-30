@@ -1,4 +1,5 @@
 import pathlib
+import collections
 from typing import Any
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
@@ -57,6 +58,28 @@ def get_router(
 
         return templates.TemplateResponse(
             request=request, name="tag.html", context={"tag_id": tag_id, "posts": posts}
+        )
+
+    @router.get("/tags")
+    async def blog_tags(request: Request, response_class=HTMLResponse):
+        posts: list[dict] = helpers.list_posts()
+
+        unsorted_tags: dict = {}
+        for post in posts:
+            page_tags = post.get("tags", []) or []
+            for tag in page_tags:
+                if tag in unsorted_tags:
+                    unsorted_tags[tag] += 1
+                else:
+                    unsorted_tags[tag] = 1
+
+        # Sort by value (number of articles per tag)
+        tags: dict = collections.OrderedDict(
+            sorted(unsorted_tags.items(), key=lambda x: x[1], reverse=True)
+        )
+
+        return templates.TemplateResponse(
+            request=request, name="tags.html", context={"tags": tags}
         )
 
     return router
