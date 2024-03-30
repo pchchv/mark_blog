@@ -1,3 +1,4 @@
+import pathlib
 from typing import Any
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
@@ -25,6 +26,18 @@ def get_router(
             request=request,
             name="index.html",
             context={"recent_3": recent_3, "favorite_posts": favorite_posts},
+        )
+
+    @router.get("/posts/{post_id}")
+    async def blog_post(post_id: str, request: Request, response_class=HTMLResponse):
+        post = [
+            x for x in filter(lambda x: x["slug"] == post_id, helpers.list_posts())
+        ][0]
+        content = pathlib.Path(f"posts/{post_id}.md").read_text().split("---")[2]
+        post["content"] = helpers.markdown(content)
+
+        return templates.TemplateResponse(
+            request=request, name="post.html", context={"post": post}
         )
 
     return router
