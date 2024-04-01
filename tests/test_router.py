@@ -10,3 +10,9 @@ app = mark_blog.get_blog_app(
 )
 
 client = TestClient(app)
+
+
+def test_blog_index():
+    response = client.get("/blog")
+    assert response.status_code == 200
+    assert "<title>Evgenii Pochchuev</title>" in response.content.decode()
