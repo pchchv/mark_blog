@@ -1,3 +1,4 @@
+import pathlib
 from mark_blog import helpers
 
 
@@ -11,3 +12,14 @@ def test_list_published_posts_success():
 def test_list_published_posts_failure():
     posts = helpers.list_posts(posts_dirname="blarg")
     assert len(posts) == 0
+
+
+def test_load_markdown_content_success():
+    path = pathlib.Path("tests/examples/posts/2024-02-fitness.md")
+    page = helpers.load_markdown_content(path)
+    assert page["metadata"]["title"] == "My training plans"
+    assert "My training plans" in page["metadata"]["title"]
+    assert (
+        "Weight loss and training for marathon and bike trips."
+        in page["metadata"]["description"]
+    )
